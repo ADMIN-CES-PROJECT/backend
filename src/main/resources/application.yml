@@ -20,6 +20,7 @@ spring:
           time_zone: Asia/Seoul
     hibernate:
       ddl-auto: update
+
 ## local
 ip: localhost
 
