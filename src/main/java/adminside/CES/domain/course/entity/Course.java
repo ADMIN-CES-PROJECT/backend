@@ -7,15 +7,17 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "courses")
 public class Course {
     @Id
     String courseId;
-    int targeGrade;
+    int targetGrade;
     int credit;
     String name;
     String courseNumber;
@@ -25,4 +27,4 @@ public class Course {
     int applicant;
     String major;
 
-}
+    }
