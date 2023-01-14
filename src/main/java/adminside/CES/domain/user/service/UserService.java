@@ -1,6 +1,7 @@
 package adminside.CES.domain.user.service;
 
 import adminside.CES.domain.course.entity.Course;
+import adminside.CES.domain.course.repository.CourseRepository;
 import adminside.CES.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
-//    private final CourseRepository courseRepository;
+    private final CourseRepository courseRepository;
 
     public List<Course> getBasket(String userId) {
 

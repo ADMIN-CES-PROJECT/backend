@@ -1,4 +1,4 @@
-package adminside.CES.domain.course;
+package adminside.CES.domain.course.controller;
 
 import adminside.CES.domain.course.entity.Course;
 import adminside.CES.domain.course.service.CourseService;
