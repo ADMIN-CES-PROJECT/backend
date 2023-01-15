@@ -2,6 +2,8 @@ package adminside.CES.domain.user.controller;
 
 
 import adminside.CES.domain.course.entity.Course;
+import adminside.CES.domain.user.dto.BasketDto;
+import adminside.CES.domain.user.entity.Basket;
 import adminside.CES.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,8 +24,8 @@ public class UserController {
     }
 
     @PostMapping("/basket")
-    public ResponseEntity<Void> insertBasket(@RequestBody Course course) {
-        userService.insertBasket(course);
+    public ResponseEntity<Void> insertBasket(@RequestBody BasketDto dto) {
+        userService.insertBasket(dto);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 }
