@@ -14,6 +14,6 @@ public class RegisterCourse {
     @GeneratedValue
     private Long id;
 
-    public String course_id;
-    public String student_id;
+    private String course_id;
+    private String student_id;
 }
