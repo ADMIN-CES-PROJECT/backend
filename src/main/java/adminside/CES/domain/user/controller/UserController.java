@@ -25,7 +25,10 @@ public class UserController {
 
     @PostMapping("/basket")
     public ResponseEntity<Void> insertBasket(@RequestBody BasketDto dto) {
-        userService.insertBasket(dto);
+        userService.createBasket(dto);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
+
+
+
 }
