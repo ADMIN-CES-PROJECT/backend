@@ -5,9 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -26,5 +25,8 @@ public class Course {
     int capacity;
     int applicant;
     String major;
+
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
+    private List<RegisterCourse> registerCourses;
 
     }
