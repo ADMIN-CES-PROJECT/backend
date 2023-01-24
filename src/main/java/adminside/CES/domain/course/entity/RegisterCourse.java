@@ -1,10 +1,9 @@
 package adminside.CES.domain.course.entity;
 
+import adminside.CES.domain.user.entity.Student;
 import lombok.Getter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -14,6 +13,11 @@ public class RegisterCourse {
     @GeneratedValue
     private Long id;
 
-    private String course_id;
-    private String student_id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "student_id")
+    private Student student;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "course_id")
+    private Course course;
 }
