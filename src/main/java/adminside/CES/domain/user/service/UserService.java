@@ -1,5 +1,7 @@
 package adminside.CES.domain.user.service;
 
+import adminside.CES.domain.admin.entity.Schedule;
+import adminside.CES.domain.admin.repository.ScheduleRepository;
 import adminside.CES.domain.course.entity.Course;
 import adminside.CES.domain.course.repository.CourseRepository;
 import adminside.CES.domain.user.dto.BasketDto;
@@ -20,7 +22,7 @@ public class UserService {
 //    private final UserRepository userRepository;
     private final CourseRepository courseRepository;
     private final BasketRepository basketRepository;
-//    private final ScheduleRepository scheduleRepository;
+    private final ScheduleRepository scheduleRepository;
     public List<Course> getBasket(String userId) {
 
         return Collections.emptyList();
