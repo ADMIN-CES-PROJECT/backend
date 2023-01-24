@@ -2,7 +2,6 @@ package adminside.CES.domain.admin.entity;
 
 import adminside.CES.domain.course.entity.Course;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
@@ -12,14 +11,17 @@ import javax.persistence.*;
 @Setter
 @Entity
 @RequiredArgsConstructor
-@NoArgsConstructor
-public class Schedule {
+public class Schedules {
     @Id
-    private int schuduleId;
+    private int scheduleId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "classrommId")
+    @JoinColumns({
+            @JoinColumn(name = "building_number"),
+            @JoinColumn(name = "room_number")
+    })
     private ClassRoom classRoom;
+
 
 //    @ManyToOne
 //    @JoinColumn(name = "building_number")

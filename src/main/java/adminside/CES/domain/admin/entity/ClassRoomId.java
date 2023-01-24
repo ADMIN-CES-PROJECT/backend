@@ -6,10 +6,10 @@ import java.io.Serializable;
 
 @Embeddable
 public class ClassRoomId implements Serializable {
-    @Column(name = "building_bumber")
+    @Column(name = "building_number")
     private String buildingNumber;
 
-    @Column(name = "romm_number")
+    @Column(name = "room_number")
     private String roomNumber;
 
     @Override
