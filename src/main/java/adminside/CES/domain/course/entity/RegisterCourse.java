@@ -1,4 +1,4 @@
-package adminside.CES.domain.register_course.entity;
+package adminside.CES.domain.course.entity;
 
 import lombok.Getter;
 
