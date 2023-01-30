@@ -2,11 +2,13 @@ package adminside.CES.domain.course.entity;
 
 import adminside.CES.domain.user.entity.Student;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class RegisterCourse {
 
     @Id
