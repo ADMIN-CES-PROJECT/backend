@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -35,5 +37,21 @@ public class RegisterCourseService {
         registerCourseRepository.save(registerCourse);
 
         return registerCourse.getId();
+    }
+
+    public void cancel() {
+
+    }
+
+    public List<RegisterCourse> findAllByStudent(int studentId) {
+        // 미구현
+        // Student student = studentRepository.findById(studentId);
+        // 테스트용
+        Student student = new Student();
+        student.setId(studentId);
+
+        List<RegisterCourse> registerCourses = registerCourseRepository.findAllByStudent(student);
+
+        return registerCourses;
     }
 }
