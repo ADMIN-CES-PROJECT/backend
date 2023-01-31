@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -27,6 +28,9 @@ public class Course {
     String major;
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
-    private List<RegisterCourse> registerCourses;
+    private List<RegisterCourse> registerCourses = new ArrayList<>();
 
+    public void setCourseId(String courseId) {
+        this.courseId = courseId;
     }
+}
