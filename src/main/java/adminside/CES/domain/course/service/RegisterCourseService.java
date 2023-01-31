@@ -25,12 +25,13 @@ public class RegisterCourseService {
         // 미구현
         // Student student = studentRepository.findById(studentId);
         // Course course = ~~~
+        //============================
         Student student = new Student();
         student.setId(studentId);
 
         Course course = new Course();
         course.setCourseId(courseId);
-
+        // ===========================
         RegisterCourse registerCourse = new RegisterCourse();
         registerCourse.setRegisterCourse(student, course);
 
@@ -51,6 +52,18 @@ public class RegisterCourseService {
         student.setId(studentId);
 
         List<RegisterCourse> registerCourses = registerCourseRepository.findAllByStudent(student);
+
+        return registerCourses;
+    }
+
+    public List<RegisterCourse> findAllByCourse(String courseId) {
+        // 미구현
+        // Course course = ~~~.findBy~~
+        // 테스트용
+        Course course = new Course();
+        course.setCourseId(courseId);
+
+        List<RegisterCourse> registerCourses = registerCourseRepository.findAllByCourse(course);
 
         return registerCourses;
     }
