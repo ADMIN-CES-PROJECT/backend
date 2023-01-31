@@ -18,7 +18,16 @@ import java.util.List;
 public class RegisterCourseController {
 
     private final RegisterCourseService registerCourseService;
-    
+
+    @PostMapping("/registerCourse")
+    public String register(@RequestParam int studentId,
+                           @RequestParam String courseId) {
+
+        registerCourseService.register(studentId, courseId);
+
+        // Thymeleaf 규칙 미정
+        return "redirect:/";
+    }
 
     // 과목 별로 조회? -? 관리자 페이지?
     @GetMapping("/registerCourses")
