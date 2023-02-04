@@ -16,6 +16,8 @@ import javax.persistence.Table;
 @Table(name = "courses")
 public class Course {
     @Id
+
+
     String courseId;
     int targetGrade;
     int credit;

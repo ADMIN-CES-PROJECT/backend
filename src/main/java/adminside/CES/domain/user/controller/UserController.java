@@ -22,14 +22,15 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/basket")
-    public ResponseEntity<List<Course>> getBasket(@RequestParam String userId) {
+    public ResponseEntity<List<Basket>> getBasket(@RequestParam String userId) {
         log.debug("basket :",userService.getBasket(userId) );
         return ResponseEntity.ok(userService.getBasket(userId));
     }
 
     @PostMapping("/basket")
     public ResponseEntity<Void> insertBasket(@RequestBody BasketDto dto) {
-        userService.createBasket(dto);
+        boolean basket = userService.createBasket(dto);
+        System.out.println("basket = " + basket);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
