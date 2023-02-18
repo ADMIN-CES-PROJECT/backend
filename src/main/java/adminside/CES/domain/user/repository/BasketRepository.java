@@ -10,6 +10,6 @@ import java.util.Optional;
 @Repository
 public interface BasketRepository extends JpaRepository<Basket, Integer> {
 
-
+    //주석
     Optional<List<Basket>> findByStudentId(String studentId);
 }
