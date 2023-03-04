@@ -20,7 +20,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-        private final UserRepository userRepository;
+    private final UserRepository userRepository;
     private final CourseRepository courseRepository;
     private final BasketRepository basketRepository;
     private final ScheduleRepository scheduleRepository;
@@ -33,60 +33,59 @@ public class UserService {
         return Collections.emptyList();
     }
 
-    /*
-     *
-     *
-     *
-     */
     public boolean createBasket(BasketDto dto) {
-        System.out.println("dto.getCourse() = " + dto.getCourseId());
+        // 모든 과목의 스케줄 같은 유효성 검사는 굳이 이 비즈니스 로직에서 해야하나 싶은 의문점이 있다.
+        // -> 사실 과목 데이터 저장 시 모든 유효성 검사를 끝낸 후 넣었을 거니깐? 보장됨.
         Optional<Course> courseById = courseRepository.findById(dto.getCourseId()); // 장바구니에 담을 과목 정보
-        Optional<Student> byId = userRepository.findById(dto.getStudentId());
         Optional<List<Basket>> basketByStudentIds = basketRepository.findByStudentId(dto.getStudentId()); // 현재 사용자의 장바구니 정보들
+//
+        if (courseById.isPresent()) { // 1. 장바구니에 담을 과목이 존재해야한다.
+            Optional<List<Schedules>> scheduleByCourseIds = scheduleRepository.findByCourseId(dto.getCourseId()); // 현재 담을 과목에 대한 스케줄
+            if (scheduleByCourseIds.isPresent()) {//2. 장바구니에 담을 과목의 스케줄 존재해야한다.
+                for (Basket bas : basketByStudentIds.get()) { // 현재 사용자의 장바구니 객체
+                    String courseId = bas.getCourse().getCourseId(); //현재 사용자가 미리 담아놓은 장바구니에 있는 과목id
+                    Optional<List<Schedules>> exSchedules = scheduleRepository.findByCourseId(courseId); // 담아놓은 과목 각각의 스케쥴
+                    //리팩토링 요소 -> 현재는 장바구니의 과목 객체 1개당 스케줄데이터를 가져오는 쿼리 1개 발생 == 총 N번 쿼리 요청
+                    // -> join 쿼리문을 사용해서 사용자의 장바구니에 담긴 과목들의 모든 스케줄데이터를 가져오는 쿼리문 사용 시 쿼리 요청 1번
+                    // => 쿼리 요청을 N번 보내는 것 보다 1번의 쿼리문으로 Join 문을 사용하는 것이 더 빠를 것 이라고 예상됨 ( 요청 작업이 더 느릴테니깐? )
 
-        Basket basket = Basket.from(courseById.get(), byId.get() ); //장바구니 객체 생성
-//
-//        if (courseById.isPresent()) { // 1. 장바구니에 담을 과목이 존재해야한다.
-//            Optional<List<Schedules>> scheduleByCourseIds = scheduleRepository.findByCourseId(dto.getCourse()); // 현재 담을 과목에 대한 스케줄
-//            if (scheduleByCourseIds.isPresent()) {//2. 장바구니에 담을 과목의 스케줄 존재해야한다.
-//                for (Basket bas : basketByStudentIds.get()) { // 현재 사용자의 장바구니 객체
-//                    String courseId = bas.getCourse(); //현재 사용자가 미리 담아놓은 장바구니에 있는 과목id
-//                    Optional<List<Schedules>> exSchedules = scheduleRepository.findByCourseId(courseId); // 담아놓은 과목 각각의 스케쥴
-//
-//                    if (exSchedules.isPresent()) {
-//                        for (Schedules sch : exSchedules.get()) { // 담겨있는 각각의 과목에 대한 스케줄 확인
-//                            String d = sch.getClassDay();
-//                            Time st = Time.valueOf(sch.getClassStartTime());
-//                            Time et = Time.valueOf(sch.getClassEndTime());
-//                            // 비교
-//                            for (Schedules toSchedule : scheduleByCourseIds.get()) { //담을.
-//                                String d2 = toSchedule.getClassDay();
-//                                Time st2 = Time.valueOf(toSchedule.getClassStartTime());
-//                                Time et2 = Time.valueOf(toSchedule.getClassEndTime());
-//                                System.out.println("et2 = " + et2);
-//                                System.out.println("st2 = " + st2);
-//                                System.out.println("st = " + st);
-//                                System.out.println("et = " + et);
-//                                if (d2.equals(d)) { // 같은 날짜에.
-//                                    if (et.equals(et2) || st.equals(st2) || (st.after(st2) && st.before(et2)) || (et.after(st2) && et.before(et2))) { //시작 과 끝 사이에 시작 또는, 시작과 끝 사이에 끝남.
-//                                        //시간표 겹침!
-//                                        return false;
-//                                    }
-//                                }
-//
-//                            }
-//
-//                        }
-//
-//                    }
-//                }
-//            }
-//        }else{
-//            return false;
-//        }
-
+                    if (exSchedules.isPresent()) {
+                        schedulesValidation(exSchedules.get(), scheduleByCourseIds.get());
+                    }
+                }
+            }
+        } else {
+            return false;
+        }
+        Optional<Student> byId = userRepository.findById(dto.getStudentId());
+        Basket basket = Basket.from(courseById.get(), byId.get()); //장바구니 객체 생성
         basketRepository.save(basket);
         return true;
     }
+
+    private boolean schedulesValidation(List<Schedules> origin, List<Schedules> target) {
+        for (Schedules sch : origin) { // 담겨있는 각각의 과목에 대한 스케줄 확인
+            String originDay = sch.getClassDay();
+            Time originSt = Time.valueOf(sch.getClassStartTime());
+            Time originEt = Time.valueOf(sch.getClassEndTime());
+            // 비교
+            for (Schedules toSchedule : target) { //담을.
+                String targetDay = toSchedule.getClassDay();
+                Time targetSt = Time.valueOf(toSchedule.getClassStartTime());
+                Time targetEt = Time.valueOf(toSchedule.getClassEndTime());
+
+                // 같은 날짜에.
+                if (targetDay.equals(originDay)
+                        && (originEt.equals(targetEt) || originSt.equals(targetSt) ||
+                        (originSt.after(targetSt) && originSt.before(targetEt)) ||
+                        (originEt.after(targetSt) && originEt.before(targetEt)))) { //시작 과 끝 사이에 시작 또는, 시작과 끝 사이에 끝남.
+                    //시간표 겹침!
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
 }
 
