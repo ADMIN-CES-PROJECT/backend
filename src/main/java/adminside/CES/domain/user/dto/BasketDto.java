@@ -1,5 +1,7 @@
 package adminside.CES.domain.user.dto;
 
+import adminside.CES.domain.course.entity.Course;
+import adminside.CES.domain.user.entity.Student;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,5 +9,5 @@ import lombok.Setter;
 @Setter
 public class BasketDto {
     private String courseId;
-    private String studentId;
+    private int studentId;
 }

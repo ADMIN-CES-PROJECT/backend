@@ -16,8 +16,6 @@ import java.util.List;
 @Table(name = "courses")
 public class Course {
     @Id
-
-
     String courseId;
     int targetGrade;
     int credit;

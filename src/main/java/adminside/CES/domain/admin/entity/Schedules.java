@@ -23,14 +23,6 @@ public class Schedules {
     private ClassRoom classRoom;
 
 
-//    @ManyToOne
-//    @JoinColumn(name = "building_number")
-//    private ClassRoom buildingNumber;
-//
-//    @ManyToOne
-//    @JoinColumn(name = "romm_number")
-//    private ClassRoom roomNumber;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id")
     private Course courseId;
