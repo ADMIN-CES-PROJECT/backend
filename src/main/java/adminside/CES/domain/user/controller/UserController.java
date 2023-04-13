@@ -4,6 +4,7 @@ package adminside.CES.domain.user.controller;
 import adminside.CES.domain.course.entity.Course;
 import adminside.CES.domain.user.dto.BasketDto;
 import adminside.CES.domain.user.entity.Basket;
+import adminside.CES.domain.user.entity.Student;
 import adminside.CES.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -22,8 +23,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/basket")
-    public ResponseEntity<List<Basket>> getBasket(@RequestParam String userId) {
-        log.debug("basket :",userService.getBasket(userId) );
+    public ResponseEntity<List<Basket>> getBasket(@RequestParam Student userId) {
         return ResponseEntity.ok(userService.getBasket(userId));
     }
 
